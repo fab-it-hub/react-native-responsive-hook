@@ -1,97 +1,139 @@
-# Help with maintenance would be appreciated!
-#### If interested please send me an email: zakriamuhammad3637@gmail.com
+```markdown
+# React Native Responsive Hook: Streamline Your UI Across All Devices 🚀
 
-# Contents
-* [The package](#react-native-responsive-hook)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Examples](#examples)
-* [How do I know it works for all devices ?](#example)
-* [License](#license)
-* [Pull Requests](#pull)
+#### Keen on shaping the future of responsive UI? Your contributions are invaluable! Reach out at zakriamuhammad3637@gmail.com.
 
-# react-native-responsive-hook
 
-[![npm version](https://badge.fury.io/js/react-native-responsive-hook.svg)](https://www.npmjs.com/package/react-native-responsive-hook)
-[![npm](https://img.shields.io/npm/dm/react-native-responsive-hook.svg)]()
+## Contents
+- [The Package](#react-native-responsive-hook)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Device Compatibility](#how-do-i-know-it-works-for-all-devices)
+- [License](#license)
+- [Contribute](#pull-requests)
 
-<i>react-native-responsive-hook</i> is a small library that provides simple methods so that React Native developers can code their UI elements to be responsive across different devices. No media queries needed. It extends the power of react-native-responsive-screen with custom hooks and additional functionalities including breakpoint detection.
+## react-native-responsive-hook
 
-Give it a try and make your development process simpler and more efficient!
+[![npm version](https://badge.fury.io/js/react-native-responsive-hook.svg)](https://npmjs.com/package/react-native-responsive-hook)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-responsive-hook.svg)]()
 
-Check out [this medium article](https://medium.com/react-native-training/build-responsive-react-native-views-for-any-device-and-support-orientation-change-1c8beba5bc23) to see the power of the library! 🚀
+**react-native-responsive-hook** is an intuitive library offering a suite of hooks that make crafting responsive UIs in React Native effortless. It builds upon react-native-responsive-screen, adding custom hooks and enhanced functionalities for precise breakpoint detection and scalable component design.
 
-<img src="https://cdn-images-1.medium.com/max/800/1*BWpx3uRPlWByahoXA6M-BQ.jpeg" />
+Experience streamlined development and consistent UI across devices. Learn more in [this detailed Medium article](https://medium.com/@mz-real/creating-responsive-uis-in-react-native-made-easy-with-react-native-responsive-hook-35fa5649cd5f)! 🚀
 
-# Installation
+![React Native Responsive Hook Example](https://cdn-images-1.medium.com/max/800/1*BWpx3uRPlWByahoXA6M-BQ.jpeg)
 
-`npm install react-native-responsive-hook --save`
+## Installation
 
-# Usage
-* Import the `useResponsive` hook from `react-native-responsive-hook`.
-* Use `useResponsive` to get `wp`, `hp`, `isLandscape`, `isPortrait`, and `breakpointGroup`.
-* Apply these values to your component styles for responsive and adaptive UI.
+Install with npm for a seamless setup:
 
-# Updates 🚀
-* Latest version supports complete hook functionalities including orientation and breakpoint detection.
+```bash
+npm install react-native-responsive-hook --save
+```
 
-# Examples
+## Usage
 
-## How to use `useResponsive` with complete hook functionalities
+Adapt your UI elements effortlessly with the following steps:
+
+1. **Import**: Fetch `useResponsive` from `react-native-responsive-hook`.
+2. **Retrieve**: Access `wp`, `hp`, `isLandscape`, `isPortrait`, and `breakpointGroup` using the hook.
+3. **Implement**: Apply these dynamic values to your component styles for a fluid, adaptive UI.
+
+### Understanding Breakpoints
+
+`breakpointGroup` classifies the screen width into categories for targeted styling:
+
+- `group1`: 0 - 399 pixels
+- `group2`: 400 - 599 pixels
+- `group3`: 600 - 767 pixels
+- `group4`: 768 - 1007 pixels
+- `group5`: 1008 - 1279 pixels
+- `group6`: 1280 pixels and beyond
+
+### Dynamic Dimensions with `wp` and `hp`
+
+- `wp(percent)`: Calculates width based on screen percentage.
+- `hp(percent)`: Calculates height based on screen percentage.
+
+These functions use density-independent pixels (`dp`) to ensure consistency across various devices.
+
+## Examples
+
+### Responsive Box Example
 
 ```javascript
+// Import necessary packages
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { useResponsive } from 'react-native-responsive-hook';
 
+// Define the App component
 const App = () => {
-  const { isLandscape, wp, hp, breakpointGroup } = useResponsive();
-
-  const styles = getStyles(isLandscape, wp, hp, breakpointGroup);
+  const { styles } = useStyles(); // Use the hook to get styles
 
   return (
     <View style={styles.container}>
       <View style={styles.responsiveBox}>
         <Text style={styles.text}>Responsive Box - Adjusts based on orientation and screen size.</Text>
-        <Text style={styles.text}>Current Breakpoint Group: {breakpointGroup}</Text>
       </View>
     </View>
   );
 };
 
-const getStyles = (isLandscape, wp, hp, breakpointGroup) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: isLandscape ? 'lightblue' : 'gray',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  responsiveBox: {
-    borderWidth: 2,
-    borderColor: 'orange',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    width: wp(84.5),
-    height: hp(17),
-    backgroundColor: breakpointGroup === 'group1' ? 'lightgreen' : 'lightcoral'
-  },
-  text: {
-    color: 'white',
+// Define the useStyles hook
+const useStyles = () => {
+  const { isLandscape, isPortrait, wp, hp, breakpointGroup } = useResponsive(); // Destructure all properties from useResponsive
+  
+  // Utilize the hook values to create dynamic styles
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: isLandscape ? 'lightblue' : 'gray', // Change background color based on orientation
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    responsiveBox: {
+      borderWidth: 2,
+      borderColor: 'orange',
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+      width: isPortrait ? wp(85) : wp(50),  // Adjust width based on orientation
+      height: hp(17),                       // Adjust height using hp function
+      backgroundColor: getBackgroundColorByGroup(breakpointGroup) // Change box color based on breakpoint group
+    },
+    text: {
+      color: 'white',
+    }
+  });
+
+  return {styles};
+};
+
+function getBackgroundColorByGroup(breakpointGroup) {
+  switch(breakpointGroup) {
+    case 'group1': return 'lightgreen';
+    case 'group2': return 'lightpink';
+    case 'group3': return 'lightyellow';
+    case 'group4': return 'lightcoral';
+    case 'group5': return 'lightskyblue';
+    case 'group6': return 'lightsteelblue';
+    default: return 'white';
   }
-});
+}
 
 export default App;
+
 ```
 
-# How do I know it works for all devices ?
+## Device Compatibility
 
-The solution is tested across a wide range of devices and ensures consistency in UI components across different screen sizes and orientations.
+This library is rigorously tested across a multitude of devices to ensure your UI looks consistently great everywhere.
 
-# License
+## License
 
-MIT
+Provided under the MIT License.
 
-# Pull Requests
+## Want to Contribute?
 
-Pull requests are welcome! Please make the PR to `development` branch though and not `master`. Thanks.
-```
+Your contributions are welcome! Feel free to submit pull requests or contact me directly to discuss how you can get involved

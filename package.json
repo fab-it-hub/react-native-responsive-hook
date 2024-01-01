@@ -1,6 +1,7 @@
 {
-  "name": "react-native-responsive-screen",
-  "version": "1.4.2",
+  "name": "react-native-responsive-hook",
+  "version": "1.0.0",
+  "license": "MIT",
   "description": "Make React Native views responsive for all devices with the use of 2 simple methods.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marudy/react-native-responsive-screen.git"
+    "url": "git+https://github.com/mz-real/react-native-responsive-hook.git"
   },
   "keywords": [
     "react-native",
@@ -17,17 +18,16 @@
     "responsive-screen",
     "responsive"
   ],
-  "author": "Tasos Maroudas <maroudasa@gmail.com> (https://github.com/marudy)",
-  "contributors": [
-    "Tasos Maroudas <maroudasa@gmail.com> (https://github.com/marudy)",
-    "Chrysa Kaia <kaia.chrysa@gmail.com> (https://github.com/ckaia)"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/marudy/react-native-responsive-screen/issues"
-  },
-  "homepage": "https://github.com/marudy/react-native-responsive-screen#readme",
+  "homepage": "https://github.com/mz-real/react-native-responsive-hook.git#readme",
   "peerDependencies": {
     "react-native": ">=0.35"
-  }
+  },
+  "types": "./index.d.ts",
+  "bugs": {
+    "url": "https://github.com/mz-real/react-native-responsive-hook/issues"
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "author": "Muhammad Zakria"
 }
