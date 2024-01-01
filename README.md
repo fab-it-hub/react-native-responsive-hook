@@ -1,4 +1,3 @@
-```markdown
 # React Native Responsive Hook: Streamline Your UI Across All Devices 🚀
 
 #### Keen on shaping the future of responsive UI? Your contributions are invaluable! Reach out at zakriamuhammad3637@gmail.com.
