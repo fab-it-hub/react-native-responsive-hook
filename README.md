@@ -21,7 +21,7 @@
 
 Experience streamlined development and consistent UI across devices. Learn more in [this detailed Medium article](https://medium.com/@mz-real/creating-responsive-uis-in-react-native-made-easy-with-react-native-responsive-hook-35fa5649cd5f)! 🚀
 
-![React Native Responsive Hook Example](https://cdn-images-1.medium.com/max/800/1*BWpx3uRPlWByahoXA6M-BQ.jpeg)
+![React Native Responsive Hook Example](images/readme.png)
 
 ## Installation
 
