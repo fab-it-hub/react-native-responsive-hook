@@ -1,16 +1,5 @@
-import { PixelRatio, useWindowDimensions } from 'react-native';
-
-/**
- * Defines breakpoints for responsive design.
- */
-export const breakpoints = {
-  group1: [0, 399],
-  group2: [400, 599],
-  group3: [600, 767],
-  group4: [768, 1007],
-  group5: [1008, 1279],
-  group6: [1280, 8192],
-};
+import { PixelRatio, Platform, useWindowDimensions } from 'react-native';
+import { baseDevice, baseFontSize, breakpoints, maxFontScaleFactor } from './constants';
 
 /**
  * Custom hook for handling responsive design in React Native applications.
@@ -19,6 +8,12 @@ export const breakpoints = {
  *   - isPortrait: A boolean indicating if the device is in portrait orientation.
  *   - wp: A function to convert width percentage to independent pixels.
  *   - hp: A function to convert height percentage to independent pixels.
+ *   - vw: A function to convert width percentage to viewport-relative units (vw).
+ *   - vh: A function to convert height percentage to viewport-relative units (vh).
+ *   - rem: A function to convert font size to rem units.
+ *   - rf: A function to convert font size to responsive font units (rf).
+ *   - isIOS: A boolean indicating if the platform is iOS.
+ *   - isAndroid: A boolean indicating if the platform is Android.
  *   - breakpointGroup: A string indicating the current breakpoint group based on the device width.
  */
 const useResponsive = () => {
@@ -56,25 +51,98 @@ const useResponsive = () => {
 
   /**
    * Converts provided width percentage to independent pixel (dp).
-   * @param  {number} widthPercent The percentage of screen's width that UI element should cover.
+   * @param  {number | string} widthPercent The percentage of screen's width that UI element should cover.
    * @returns {number} The calculated dp depending on the current device's screen width.
    */
   const wp = (widthPercent) => {
-    const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
-    return PixelRatio.roundToNearestPixel((width * elemWidth) / 100);
+    const elementWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
+    return PixelRatio.roundToNearestPixel((width * elementWidth) / 100);
   };
 
   /**
    * Converts provided height percentage to independent pixel (dp).
-   * @param  {number} heightPercent The percentage of screen's height that UI element should cover.
+   * @param  {number | string} heightPercent The percentage of screen's height that UI element should cover.
    * @returns {number} The calculated dp depending on the current device's screen height.
    */
   const hp = (heightPercent) => {
-    const elemHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
-    return PixelRatio.roundToNearestPixel((height * elemHeight) / 100);
+    const elementHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
+    return PixelRatio.roundToNearestPixel((height * elementHeight) / 100);
   };
 
-  return { isLandscape, isPortrait, wp, hp, breakpointGroup };
+  /**
+   * Converts provided width percentage to viewport-relative units (vw).
+   * @param  {number | string} widthPercent The percentage of viewport's width that UI element should cover.
+   * @returns {number} The calculated vw value.
+   */
+  const vw = (widthPercent) => {
+    const elementWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
+    return Math.floor((width / 100) * elementWidth);
+  };
+
+  /**
+   * Converts provided height percentage to viewport-relative units (vh).
+   * @param  {number | string} heightPercent The percentage of viewport's height that UI element should cover.
+   * @returns {number} The calculated vh value.
+   */
+  const vh = (heightPercent) => {
+    const elementHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
+    return Math.floor((height / 100) * elementHeight);
+  };
+
+  // Font scaling logic
+
+  const base = isLandscape ? height : width;
+
+  /**
+   * Converts provided font size to rem units.
+   * @param  {number | string} size The font size in pixels.
+   * @returns {number} The calculated rem value.
+   */
+  const rem = (size = 0) => {
+    let multiplier = 1;
+    if (Math.max(height, width) < baseDevice.height) {
+      multiplier = 0.9;
+    }
+    const elementSize = typeof size === 'number' ? size : parseFloat(size);
+    return Math.floor((base / baseDevice.width) * elementSize * multiplier);
+  };
+
+  /**
+   * Converts provided font size to responsive font units (rf).
+   * @param  {number | string} size The font size in pixels.
+   * @returns {number} The calculated rf value.
+   */
+  const rf = (size = 0) => {
+    const elementSize = typeof size === 'number' ? size : parseFloat(size);
+    const scaledFontSize = Math.min(baseFontSize * maxFontScaleFactor, elementSize);
+    return scaledFontSize;
+  };
+
+  /**
+   * Determines if the platform is iOS.
+   * @type {boolean}
+   */
+  const isIOS = Platform.OS === 'ios';
+
+  /**
+   * Determines if the platform is Android.
+   * @type {boolean}
+   */
+  const isAndroid = Platform.OS === 'android';
+
+  return {
+    isLandscape,
+    isPortrait,
+    wp,
+    hp,
+    vw,
+    vh,
+    rem,
+    rf,
+    isIOS,
+    isAndroid,
+    breakpointGroup,
+  };
 };
 
 export default useResponsive;

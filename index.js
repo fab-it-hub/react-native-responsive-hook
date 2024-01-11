@@ -1,12 +1,39 @@
 // packages
-import { Dimensions, PixelRatio } from 'react-native';
+import { Dimensions, PixelRatio, Platform } from 'react-native';
 import useResponsive from './useResponsiveScreen';
+import { baseDevice, baseFontSize, breakpoints, maxFontScaleFactor } from './constants';
 
 // Retrieve initial screen's width
 let screenWidth = Dimensions.get('window').width;
 
 // Retrieve initial screen's height
 let screenHeight = Dimensions.get('window').height;
+
+const base = isLandscape ? screenHeight : screenWidth;
+
+/**
+ * Determines if the platform is iOS.
+ * @type {boolean}
+ */
+const isIOS = Platform.OS === 'ios';
+
+/**
+ * Determines if the platform is Android.
+ * @type {boolean}
+ */
+const isAndroid = Platform.OS === 'android';
+
+/**
+ * Determines if the device is in landscape orientation.
+ * @type {boolean}
+ */
+const isLandscape = screenWidth > screenHeight;
+
+/**
+ * Determines if the device is in portrait orientation.
+ * @type {boolean}
+ */
+const isPortrait = screenWidth < screenHeight;
 
 /**
  * Converts provided width percentage to independent pixel (dp).
@@ -39,7 +66,7 @@ const heightPercentageToDP = heightPercent => {
 };
 
 /**
- * Event listener function that detects orientation change (every time it occurs) and triggers 
+ * Event listener function that detects orientation change (every time it occurs) and triggers
  * screen rerendering. It does that, by changing the state of the screen where the function is
  * called. State changing occurs for a new state variable with the name 'orientation' that will
  * always hold the current value of the orientation after the 1st orientation change.
@@ -70,10 +97,79 @@ const removeOrientationListener = () => {
   Dimensions.removeEventListener('change', () => {});
 };
 
+/**
+ * Converts provided width percentage to viewport-relative units (vw).
+ * @param  {string} widthPercent The percentage of viewport's width that UI element should cover.
+ * @returns {number} The calculated vw value.
+ */
+const viewportWidthPercentage = widthPercent => {
+  const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
+  return Math.floor((screenWidth / 100) * elemWidth);
+};
+
+/**
+ * Converts provided height percentage to viewport-relative units (vh).
+ * @param  {string} heightPercent The percentage of viewport's height that UI element should cover.
+ * @returns {number} The calculated vh value.
+ */
+const viewportHeightPercentage = heightPercent => {
+  const elemHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
+  return Math.floor((screenHeight / 100) * elemHeight);
+};
+
+/**
+ * Converts provided font size to rem units.
+ * @param  {string} size The font size in pixels.
+ * @returns {number} The calculated rem value.
+ */
+const remUnit = size => {
+  const elemSize = typeof size === 'number' ? size : parseFloat(size);
+  const multiplier = Math.max(screenHeight, screenWidth) < baseDevice.height ? 0.9 : 1;
+  return Math.floor((base / baseDevice.width) * elemSize * multiplier);
+};
+
+/**
+ * Converts provided font size to responsive font units (rf).
+ * @param  {string} size The font size in pixels.
+ * @returns {number} The calculated rf value.
+ */
+const responsiveFont = size => {
+  const elemSize = typeof size === 'number' ? size : parseFloat(size);
+  const scaledFontSize = Math.min(baseFontSize * maxFontScaleFactor, elemSize);
+  return scaledFontSize;
+};
+
+/**
+ * Gets the current breakpoint group based on the device width.
+ * @returns {string} The name of the current breakpoint group.
+ */
+const getBreakpointGroup = () => {
+for (let group in breakpoints) {
+  if (screenWidth >= breakpoints[group][0] && screenWidth <= breakpoints[group][1]) {
+    return group;
+  }
+}
+};
+
+/**
+ * The current breakpoint group based on the device width.
+ * @type {string}
+ */
+const breakpointGroup = getBreakpointGroup();
+
 export {
+  isLandscape,
+  isPortrait,
+  isAndroid,
+  isIOS,
+  breakpointGroup,
   widthPercentageToDP,
   heightPercentageToDP,
   listenOrientationChange,
   removeOrientationListener,
+  viewportWidthPercentage,
+  viewportHeightPercentage,
+  remUnit,
+  responsiveFont,
   useResponsive,
 };

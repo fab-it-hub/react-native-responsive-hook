@@ -7,6 +7,12 @@ declare export type UseResponsiveReturnType = {
   isPortrait: boolean,
   wp: (widthPercent: number | string) => number,
   hp: (heightPercent: number | string) => number,
+  vw: (widthPercent: number | string) => number,
+  vh: (heightPercent: number | string) => number,
+  rem: (size?: number | string) => number,
+  rf: (size?: number | string) => number,
+  isIOS: boolean,
+  isAndroid: boolean,
   breakpointGroup: string
 };
 
@@ -18,10 +24,10 @@ declare export function heightPercentageToDP(
   heightPercent: string | number
 ): number;
 
-declare export function useResponsive(): UseResponsiveReturnType;
-
 declare export function listenOrientationChange(
   screenClassComponent: Component<any, any>
 ): void;
 
 declare export function removeOrientationListener(): void;
+
+declare export function useResponsive(): UseResponsiveReturnType;
