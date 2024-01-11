@@ -1,4 +1,4 @@
-# React Native Responsive Hook: Streamline Your UI Across All Devices 🚀
+ # React Native Responsive Hook: Streamline Your UI Across All Devices 🚀
 
 #### Keen on shaping the future of responsive UI? Your contributions are invaluable! Reach out at zakriamuhammad3637@gmail.com.
 
@@ -8,8 +8,6 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Examples](#examples)
-- [Device Compatibility](#how-do-i-know-it-works-for-all-devices)
-- [License](#license)
 - [Contribute](#pull-requests)
 
 ## react-native-responsive-hook
@@ -36,7 +34,7 @@ npm install react-native-responsive-hook --save
 Adapt your UI elements effortlessly with the following steps:
 
 1. **Import**: Fetch `useResponsive` from `react-native-responsive-hook`.
-2. **Retrieve**: Access `wp`, `hp`, `isLandscape`, `isPortrait`, and `breakpointGroup` using the hook.
+2. **Retrieve**: Access `wp`, `hp`, `vw`, `vh`, `isLandscape`, `isPortrait`, `rem`, `rf`, `isIOS`, `isAndroid`, `breakpointGroup` using the hook.
 3. **Implement**: Apply these dynamic values to your component styles for a fluid, adaptive UI.
 
 ### Understanding Breakpoints
@@ -50,12 +48,28 @@ Adapt your UI elements effortlessly with the following steps:
 - `group5`: 1008 - 1279 pixels
 - `group6`: 1280 pixels and beyond
 
-### Dynamic Dimensions with `wp` and `hp`
+### Dynamic Dimensions with `wp`, `hp`, `vw`, and `vh`
 
 - `wp(percent)`: Calculates width based on screen percentage.
 - `hp(percent)`: Calculates height based on screen percentage.
+- `vw(percent)`: Calculates width based on viewport width percentage.
+- `vh(percent)`: Calculates height based on viewport height percentage.
 
 These functions use density-independent pixels (`dp`) to ensure consistency across various devices.
+
+### Responsive Font Scaling with `rem` and `rf`
+
+- `rem(size)`: Converts font size to rem units.
+- `rf(size)`: Converts font size to responsive font units (rf).
+
+`rem` utilizes a multiplier to scale fonts based on the device's screen size, while `rf` ensures font sizes remain within a predefined range.
+
+### Platform Detection with `isIOS` and `isAndroid`
+
+- `isIOS`: Indicates if the platform is iOS.
+- `isAndroid`: Indicates if the platform is Android.
+
+Use these booleans to tailor your UI specifically for each platform.
 
 ## Examples
 
@@ -74,7 +88,7 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={styles.responsiveBox}>
-        <Text style={styles.text}>Responsive Box - Adjusts based on orientation and screen size.</Text>
+        <Text style={styles.text}>Responsive Box - Adjusts based on orientation, screen size, and platform.</Text>
       </View>
     </View>
   );
@@ -82,7 +96,7 @@ const App = () => {
 
 // Define the useStyles hook
 const useStyles = () => {
-  const { isLandscape, isPortrait, wp, hp, breakpointGroup } = useResponsive(); // Destructure all properties from useResponsive
+  const { isLandscape, isPortrait, wp, hp, vw, vh, rem, rf, isIOS, isAndroid, breakpointGroup } = useResponsive(); // Destructure all properties from useResponsive
   
   // Utilize the hook values to create dynamic styles
   const styles = StyleSheet.create({
@@ -103,6 +117,8 @@ const useStyles = () => {
     },
     text: {
       color: 'white',
+      fontSize: rem(16), // Use rem for font size
+      fontFamily: isIOS ? 'Helvetica' : 'Roboto', // Use different font families for iOS and Android
     }
   });
 
@@ -125,13 +141,6 @@ export default App;
 
 ```
 
-## Device Compatibility
-
-This library is rigorously tested across a multitude of devices to ensure your UI looks consistently great everywhere.
-
-## License
-
-Provided under the MIT License.
 
 ## Want to Contribute?
 
