@@ -13,13 +13,13 @@
 ## react-native-responsive-hook
 
 [![npm version](https://badge.fury.io/js/react-native-responsive-hook.svg)](https://npmjs.com/package/react-native-responsive-hook)
-[![npm downloads](https://img.shields.io/npm/dm/react-native-responsive-hook.svg)]()
+[![npm downloads](https://img.shields.io/npm/dt/react-native-responsive-hook.svg)]()
 
 **react-native-responsive-hook** is an intuitive library offering a suite of hooks that make crafting responsive UIs in React Native effortless. It builds upon react-native-responsive-screen, adding custom hooks and enhanced functionalities for precise breakpoint detection and scalable component design.
 
 Experience streamlined development and consistent UI across devices. Learn more in [this detailed Medium article](https://medium.com/@mz-real/creating-responsive-uis-in-react-native-made-easy-with-react-native-responsive-hook-35fa5649cd5f)! 🚀
 
-![React Native Responsive Hook Example](images/readme.png)
+![React Native Responsive Hook Example](https://i.imgur.com/pEqLC5B.png)
 
 ## Installation
 
